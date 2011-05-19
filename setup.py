@@ -1,6 +1,11 @@
 from setuptools import setup
 version = __import__('nose-timer').__version__
 
+packages, data_files = [], []
+root_dir = os.path.dirname(__file__)
+if root_dir != '':
+    os.chdir(root_dir)
+
 setup(
     name='nose-timer',
     version=version,
@@ -19,7 +24,7 @@ setup(
         'SQLAlchemy>=0.6.3',
     ],
     setup_requires=[],
-    packages=find_packages(),
+    packages=packages,
     include_package_data=True,
     test_suite='nose.collector',
     zip_safe=False,
