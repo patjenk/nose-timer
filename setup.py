@@ -1,8 +1,9 @@
+from os import path, chdir
 from setuptools import setup
-version = __import__('nose-timer').__version__
+version = __import__('nose_timer').__version__
 
 packages, data_files = [], []
-root_dir = os.path.dirname(__file__)
+root_dir = path.dirname(__file__)
 if root_dir != '':
     os.chdir(root_dir)
 
@@ -15,22 +16,17 @@ setup(
     author_email='',
     url='https://github.com/patjenk/nose-timer',
     install_requires=[
-        'werkzeug>=0.6.2',
-        'mako>=0.3.6',
-        'simplejson',
-        'mock',
         'nose==1.0.0',
-        'boto>=2.0a2',
-        'SQLAlchemy>=0.6.3',
     ],
     setup_requires=[],
     packages=packages,
     include_package_data=True,
     test_suite='nose.collector',
     zip_safe=False,
+    py_modules=['nose_timer'],
     entry_points={
         'nose.plugins.0.10': [
-            'with-test-timers = application.utils.test_timer:TestTimer',
+            'nose_timer = nose_timer.NoseTimer',
         ]
     },
 )

@@ -33,15 +33,15 @@ LICENSE:
 import operator
 from time import time
 
-import nose
+import nose.plugins import Plugin
 
-
-class TestTimer(Plugin):
+class NoseTimer(Plugin):
     """This plugin provides test timings
 
     """
 
-    name = 'test-timer'
+    name = 'nose-timer'
+    enabled = False
     score = 1
 
     def _timeTaken(self):
@@ -54,13 +54,28 @@ class TestTimer(Plugin):
             taken = 0.0
         return taken
 
+
     def options(self, parser, env):
         """Sets additional command line options."""
         super(TestTimer, self).options(parser, env)
+        parser.add_option(
+            "--with-test-timers", action="with_test_timers",
+            dest="exclude_dirs",
+            help="Directory to exclude from test discovery. \
+                Path can be relative to current working directory \
+                or an absolute path. May be specified multiple \
+                times. [NOSE_EXCLUDE_DIRS]")
 
     def configure(self, options, config):
-        """Configures the test timer plugin."""
+        """Configures the test timer plugin based on command line options."""
         super(TestTimer, self).configure(options, config)
+
+        if options.with_test_timers:
+          self.enabled = True
+        else:
+          self.enabled = False
+        if not self.enabled:
+          return
         self.config = config
         self._timed_tests = {}
 
