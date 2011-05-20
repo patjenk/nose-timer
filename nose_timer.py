@@ -35,7 +35,7 @@ import operator
 from time import time
 from nose.plugins import Plugin
 
-log = logging.getLogger('nose.plugins.nose_exclude')
+log = logging.getLogger('nose.plugins.nose_timer')
 
 class NoseTimer(Plugin):
 
