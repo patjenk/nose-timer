@@ -1,11 +1,14 @@
 from os import path, chdir
 from setuptools import setup
-version = __import__('nose_timer').__version__
+VERSION = (0,1,'pre')
 
-packages, data_files = [], []
-root_dir = path.dirname(__file__)
-if root_dir != '':
-    os.chdir(root_dir)
+# Dynamically calculate the version based on VERSION tuple
+if len(VERSION) > 2 and VERSION[2] is not None:
+    str_version = "%s.%s_%s" % VERSION[:3]
+else:
+    str_version = "%s.%s" % VERSION[:2]
+
+version = str_version
 
 setup(
     name='nose-timer',
@@ -19,14 +22,12 @@ setup(
         'nose==1.0.0',
     ],
     setup_requires=[],
-    packages=packages,
-    include_package_data=True,
     test_suite='nose.collector',
     zip_safe=False,
     py_modules=['nose_timer'],
     entry_points={
         'nose.plugins.0.10': [
-            'nose_timer = nose_timer.NoseTimer',
+            'nose_timer = nose_timer:NoseTimer',
         ]
     },
 )

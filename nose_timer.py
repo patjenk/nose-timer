@@ -30,19 +30,16 @@ LICENSE:
 
 """
 
+import logging
 import operator
 from time import time
+from nose.plugins import Plugin
 
-import nose.plugins import Plugin
+log = logging.getLogger('nose.plugins.nose_exclude')
 
 class NoseTimer(Plugin):
-    """This plugin provides test timings
 
-    """
-
-    name = 'nose-timer'
     enabled = False
-    score = 1
 
     def _timeTaken(self):
         if hasattr(self, '_timer'):
@@ -57,10 +54,10 @@ class NoseTimer(Plugin):
 
     def options(self, parser, env):
         """Sets additional command line options."""
-        super(TestTimer, self).options(parser, env)
+        super(NoseTimer, self).options(parser, env)
         parser.add_option(
-            "--with-test-timers", action="with_test_timers",
-            dest="exclude_dirs",
+            "--with-test-timers", action="store_true",
+            dest="with_test_timers",
             help="Directory to exclude from test discovery. \
                 Path can be relative to current working directory \
                 or an absolute path. May be specified multiple \
@@ -68,7 +65,7 @@ class NoseTimer(Plugin):
 
     def configure(self, options, config):
         """Configures the test timer plugin based on command line options."""
-        super(TestTimer, self).configure(options, config)
+        super(NoseTimer, self).configure(options, config)
 
         if options.with_test_timers:
           self.enabled = True
@@ -102,7 +99,3 @@ class NoseTimer(Plugin):
 
     def addSuccess(self, test, capt=None):
         self._register_time(test)
-
-
-if __name__ == '__main__':
-    nose.main(addplugins=[TestTimer()])
